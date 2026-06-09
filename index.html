@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Review Analyzer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <div>
+        <h1>Review Analyzer</h1>
+        <p>Analyze customer feedback with NLP-powered sentiment scoring, keyword extraction, and review insights.</p>
+      </div>
+      <div class="feature-chip">Sentiment Analysis</div>
+      <div class="feature-chip">Keyword Extraction</div>
+      <div class="feature-chip">Rating Suggestion</div>
+    </header>
+
+    <main>
+      <section class="panel panel-input">
+        <h2>Enter one or more reviews</h2>
+        <textarea id="reviewInput" placeholder="Paste customer reviews here..."></textarea>
+        <div class="actions">
+          <button id="analyzeBtn">Analyze Reviews</button>
+          <button id="clearBtn" class="secondary">Clear</button>
+        </div>
+      </section>
+
+      <section class="panel panel-results hidden" id="resultsPanel">
+        <div class="result-grid">
+          <article class="result-card">
+            <h3>Overall Sentiment</h3>
+            <p id="sentimentLabel">-</p>
+            <div class="score" id="sentimentScore">0%</div>
+          </article>
+          <article class="result-card">
+            <h3>Suggested Rating</h3>
+            <p id="ratingSuggestion">-</p>
+          </article>
+          <article class="result-card">
+            <h3>Review Category</h3>
+            <p id="categoryLabel">-</p>
+          </article>
+        </div>
+
+        <div class="detail-block">
+          <h3>Top Keywords</h3>
+          <div id="keywordsList" class="keyword-list"></div>
+        </div>
+
+        <div class="detail-block">
+          <h3>Analysis Notes</h3>
+          <ul id="analysisNotes" class="notes"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (async () => {
+      if (window.location.protocol === 'file:') {
+        try {
+          const response = await fetch('http://127.0.0.1:5000/api/analyze', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: 'ping' })
+          });
+          if (response.ok) {
+            window.location.href = 'http://127.0.0.1:5000/';
+          }
+        } catch (err) {
+          // Backend unavailable, remain on file URL.
+        }
+      }
+    })();
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
